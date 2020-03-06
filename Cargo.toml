@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Your Name <Your Email Address>"]
 
 [dependencies]
+gdk = "0.6.0"
 gio= "0.2.0"
 
 [dependencies.gtk]
