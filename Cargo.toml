@@ -1,11 +1,11 @@
 [package]
-name = "vanilla_text"
+name = "mango"
 version = "0.1.0"
-authors = ["Your Name <Your Email Address>"]
+authors = ["TaKO8Ki <takoyaki0316@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 gio= "0.2.0"
-
-[dependencies.gtk]
-version = "0.2.0"
-features = ["v3_16"] 
+gdk =  {version = "0.6.0", features=["v3_16"]}
+gtk = {version = "0.2.0", features = ["v3_16"]}
+futures = "0.1"

@@ -1,22 +1,38 @@
+extern crate futures;
 extern crate gtk;
-extern crate gio;
 
-use gtk::{ WidgetExt, WindowExt };
-use gio::{ ApplicationExt };
+use gtk::prelude::*;
+use gtk::{Entry, Label, Window, WindowType};
 
 fn main() {
-    match gtk::Application::new("com.github.koji-m.vanilla_text", gio::APPLICATION_HANDLES_OPEN) {
-        Ok(app) => {
-            app.connect_activate(|app| {
-                let win = gtk::ApplicationWindow::new(&app);
-                win.set_title("Hello Gtk-rs");
-                win.show_all();
-            });
+    if gtk::init().is_err() {
+        println!("faild to initialize GTK");
+        return;
+    }
 
-            app.run(&[""]);
-        },
-        Err(_) => {
-            println!("Application start up error");
-        }
-    };
+    let window = Window::new(WindowType::Toplevel);
+    window.set_title("mango");
+    window.set_default_size(800, 800);
+
+    let label = Label::new(Some("HTML"));
+    let entry = Entry::new();
+
+    let vbox = gtk::Box::new(gtk::Orientation::Vertical, 2);
+    // child: &P, expand: bool, fill: bool, padding: u32
+    vbox.pack_start(&entry, false, true, 2);
+    vbox.pack_start(&label, true, true, 3);
+    window.add(&vbox);
+
+    window.show_all();
+
+    window.connect_delete_event(|_, _| {
+        gtk::main_quit();
+        Inhibit(false)
+    });
+
+    entry.connect_activate(move |x| {
+        let url: String = x.get_text().unwrap();
+        label.set_text(&(url).to_string());
+    });
+    gtk::main();
 }
