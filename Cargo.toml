@@ -8,6 +8,4 @@ edition = "2018"
 gio= "0.2.0"
 gdk =  {version = "0.6.0", features=["v3_16"]}
 gtk = {version = "0.2.0", features = ["v3_16"]}
-reqwest = {version = "0.10.0", features=["json"]}
-tokio = {version = "0.2.6", features = ["macros"]}
 futures = "0.1"

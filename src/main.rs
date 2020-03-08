@@ -1,6 +1,5 @@
 extern crate futures;
 extern crate gtk;
-extern crate reqwest;
 
 use gtk::prelude::*;
 use gtk::{Entry, Label, Window, WindowType};
