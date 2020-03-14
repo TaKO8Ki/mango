@@ -1,4 +1,3 @@
-extern crate futures;
 extern crate gtk;
 extern crate reqwest;
 

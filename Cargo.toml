@@ -8,5 +8,4 @@ edition = "2018"
 gio= "0.2.0"
 gdk =  {version = "0.6.0", features=["v3_16"]}
 gtk = {version = "0.2.0", features = ["v3_16"]}
-futures = "0.1"
 reqwest = { version = "0.10", features = ["blocking", "json"] }
