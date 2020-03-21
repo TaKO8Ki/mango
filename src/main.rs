@@ -48,7 +48,7 @@ fn main() {
         let url: String = x.get_text().unwrap();
         match get(&(url).to_string()) {
             Ok(body) => {
-                let root_node = mango::interfaces::controllers::parser::parse(html.to_string());
+                let root_node = mango::interfaces::controllers::parser::html::parse(html.to_string());
                 println!("{:?}", root_node);
                 label.set_text(&(html).to_string())
             }
