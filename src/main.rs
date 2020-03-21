@@ -1,4 +1,5 @@
 extern crate gtk;
+extern crate mango;
 extern crate reqwest;
 
 use gtk::prelude::*;
@@ -32,10 +33,25 @@ fn main() {
 
     win.show_all();
 
+    let html: &str = "
+                    <body>
+                    <div>
+                        <h1>Example Domain</h1>
+                        <p>This domain is for use in illustrative examples in documents. You may use this
+                        domain in literature without prior coordination or asking for permission.</p>
+                        <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>
+                    </div>
+                    </body>
+                    ";
+
     entry.connect_activate(move |x| {
         let url: String = x.get_text().unwrap();
         match get(&(url).to_string()) {
-            Ok(body) => label.set_text(&(body).to_string()),
+            Ok(body) => {
+                let root_node = mango::interfaces::controllers::parser::parse(html.to_string());
+                println!("{:?}", root_node);
+                label.set_text(&(html).to_string())
+            }
             Err(err) => println!("Error: {:?}", err),
         }
     });
