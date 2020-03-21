@@ -30,7 +30,6 @@ pub fn parse(source: String) -> node::Node {
   }
   .parse_nodes();
 
-  // If the document contains a root element, just return it. Otherwise, create one.
   if nodes.len() == 1 {
     nodes.swap_remove(0)
   } else {
@@ -39,17 +38,14 @@ pub fn parse(source: String) -> node::Node {
 }
 
 impl Parser {
-  // Read the current character without consuming it.
   fn next_char(&self) -> char {
     self.input[self.pos..].chars().next().unwrap()
   }
 
-  // Do the next characters start with the given string?
   fn starts_with(&self, s: &str) -> bool {
     self.input[self.pos..].starts_with(s)
   }
 
-  // Return true if all input is consumed.
   fn eof(&self) -> bool {
     self.pos >= self.input.len()
   }
@@ -77,7 +73,6 @@ impl Parser {
     self.consume_while(char::is_whitespace);
   }
 
-  // Parse a tag or attribute name.
   fn parse_tag_name(&mut self) -> String {
     self.consume_while(|c| match c {
       'a'...'z' | 'A'...'Z' | '0'...'9' => true,
@@ -85,7 +80,6 @@ impl Parser {
     })
   }
 
-  // Parse a single node.
   fn parse_node(&mut self) -> node::Node {
     match self.next_char() {
       '<' => self.parse_element(),
@@ -93,22 +87,18 @@ impl Parser {
     }
   }
 
-  // Parse a text node.
   fn parse_text(&mut self) -> node::Node {
     text(self.consume_while(|c| c != '<'))
   }
 
   fn parse_element(&mut self) -> node::Node {
-    // Opening tag.
     assert!(self.consume_char() == '<');
     let tag_name = self.parse_tag_name();
     let attrs = self.parse_attributes();
     assert!(self.consume_char() == '>');
 
-    // Contents.
     let children = self.parse_nodes();
 
-    // Closing tag.
     assert!(self.consume_char() == '<');
     assert!(self.consume_char() == '/');
     assert!(self.parse_tag_name() == tag_name);
@@ -117,7 +107,6 @@ impl Parser {
     return elem(tag_name, attrs, children);
   }
 
-  // Parse a single name="value" pair.
   fn parse_attr(&mut self) -> (String, String) {
     let name = self.parse_tag_name();
     assert!(self.consume_char() == '=');
@@ -125,7 +114,6 @@ impl Parser {
     return (name, value);
   }
 
-  // Parse a quoted value.
   fn parse_attr_value(&mut self) -> String {
     let open_quote = self.consume_char();
     assert!(open_quote == '"' || open_quote == '\'');
@@ -134,7 +122,6 @@ impl Parser {
     return value;
   }
 
-  // Parse a list of name="value" pairs, separated by whitespace.
   fn parse_attributes(&mut self) -> node::AttrMap {
     let mut attributes = std::collections::HashMap::new();
     loop {
@@ -147,7 +134,7 @@ impl Parser {
     }
     return attributes;
   }
-  // Parse a sequence of sibling nodes.
+
   fn parse_nodes(&mut self) -> Vec<node::Node> {
     let mut nodes = Vec::new();
     loop {
