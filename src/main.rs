@@ -1,6 +1,5 @@
-extern crate mango;
-
 extern crate gtk;
+extern crate mango;
 extern crate reqwest;
 
 use gtk::prelude::*;
