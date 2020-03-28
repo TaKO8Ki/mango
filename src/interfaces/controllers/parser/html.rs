@@ -1,4 +1,4 @@
-use crate::domain::entity::node;
+use crate::domain::entity::dom;
 
 #[derive(Debug)]
 struct Parser {
@@ -6,7 +6,7 @@ struct Parser {
   input: String,
 }
 
-pub fn parse(source: String) -> node::Node {
+pub fn parse(source: String) -> dom::Node {
   let mut nodes = Parser {
     pos: 0,
     input: source,
@@ -16,7 +16,7 @@ pub fn parse(source: String) -> node::Node {
   if nodes.len() == 1 {
     nodes.swap_remove(0)
   } else {
-    node::elem("html".to_string(), std::collections::HashMap::new(), nodes)
+    dom::elem("html".to_string(), std::collections::HashMap::new(), nodes)
   }
 }
 
@@ -63,18 +63,18 @@ impl Parser {
     })
   }
 
-  fn parse_node(&mut self) -> node::Node {
+  fn parse_node(&mut self) -> dom::Node {
     match self.next_char() {
       '<' => self.parse_element(),
       _ => self.parse_text(),
     }
   }
 
-  fn parse_text(&mut self) -> node::Node {
-    node::text(self.consume_while(|c| c != '<'))
+  fn parse_text(&mut self) -> dom::Node {
+    dom::text(self.consume_while(|c| c != '<'))
   }
 
-  fn parse_element(&mut self) -> node::Node {
+  fn parse_element(&mut self) -> dom::Node {
     assert!(self.consume_char() == '<');
     let tag_name = self.parse_tag_name();
     let attrs = self.parse_attributes();
@@ -87,7 +87,7 @@ impl Parser {
     assert!(self.parse_tag_name() == tag_name);
     assert!(self.consume_char() == '>');
 
-    return node::elem(tag_name, attrs, children);
+    return dom::elem(tag_name, attrs, children);
   }
 
   fn parse_attr(&mut self) -> (String, String) {
@@ -105,7 +105,7 @@ impl Parser {
     return value;
   }
 
-  fn parse_attributes(&mut self) -> node::AttrMap {
+  fn parse_attributes(&mut self) -> dom::AttrMap {
     let mut attributes = std::collections::HashMap::new();
     loop {
       self.consume_whitespace();
@@ -118,7 +118,7 @@ impl Parser {
     return attributes;
   }
 
-  fn parse_nodes(&mut self) -> Vec<node::Node> {
+  fn parse_nodes(&mut self) -> Vec<dom::Node> {
     let mut nodes = Vec::new();
     loop {
       self.consume_whitespace();
