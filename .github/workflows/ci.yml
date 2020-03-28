@@ -30,7 +30,8 @@ jobs:
         run: rustup component add clippy
       - name: Run lint
         uses: actions-rs/cargo@v1
-        command: clippy
+        with:
+          command: clippy
 
   build_and_test:
     name: Build and Test
