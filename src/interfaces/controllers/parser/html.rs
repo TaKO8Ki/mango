@@ -38,7 +38,7 @@ impl Parser {
         let (_, cur_char) = iter.next().unwrap();
         let (next_pos, _) = iter.next().unwrap_or((1, ' '));
         self.pos += next_pos;
-        return cur_char;
+        cur_char
     }
 
     fn consume_while<F>(&mut self, test: F) -> String
@@ -49,7 +49,7 @@ impl Parser {
         while !self.eof() && test(self.next_char()) {
             result.push(self.consume_char());
         }
-        return result;
+        result
     }
 
     fn consume_whitespace(&mut self) {
@@ -87,14 +87,14 @@ impl Parser {
         assert!(self.parse_tag_name() == tag_name);
         assert!(self.consume_char() == '>');
 
-        return dom::elem(tag_name, attrs, children);
+        dom::elem(tag_name, attrs, children)
     }
 
     fn parse_attr(&mut self) -> (String, String) {
         let name = self.parse_tag_name();
         assert!(self.consume_char() == '=');
         let value = self.parse_attr_value();
-        return (name, value);
+        (name, value)
     }
 
     fn parse_attr_value(&mut self) -> String {
@@ -102,7 +102,7 @@ impl Parser {
         assert!(open_quote == '"' || open_quote == '\'');
         let value = self.consume_while(|c| c != open_quote);
         assert!(self.consume_char() == open_quote);
-        return value;
+        value
     }
 
     fn parse_attributes(&mut self) -> dom::AttrMap {
@@ -115,7 +115,7 @@ impl Parser {
             let (name, value) = self.parse_attr();
             attributes.insert(name, value);
         }
-        return attributes;
+        attributes
     }
 
     fn parse_nodes(&mut self) -> Vec<dom::Node> {
@@ -127,6 +127,6 @@ impl Parser {
             }
             nodes.push(self.parse_node());
         }
-        return nodes;
+        nodes
     }
 }
