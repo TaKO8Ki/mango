@@ -45,7 +45,7 @@ fn main() {
 
     entry.connect_activate(move |x| {
         let url: String = x.get_text().unwrap();
-        match get(&(url).to_string()) {
+        match get(&(url)) {
             Ok(_) => {
                 let root_node =
                     mango::interfaces::controllers::parser::html::parse(html.to_string());
