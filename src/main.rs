@@ -1,5 +1,4 @@
 extern crate gtk;
-extern crate mango;
 extern crate reqwest;
 
 use gtk::prelude::*;
@@ -46,9 +45,10 @@ fn main() {
 
     entry.connect_activate(move |x| {
         let url: String = x.get_text().unwrap();
-        match get(&(url).to_string()) {
-            Ok(body) => {
-                let root_node = mango::interfaces::controllers::parser::parse(html.to_string());
+        match get(&(url)) {
+            Ok(_) => {
+                let root_node =
+                    mango::interfaces::controllers::parser::html::parse(html.to_string());
                 println!("{:?}", root_node);
                 label.set_text(&(html).to_string())
             }
