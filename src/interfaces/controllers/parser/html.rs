@@ -130,3 +130,34 @@ impl Parser {
         nodes
     }
 }
+
+mod test {
+    #[test]
+    fn test_parse_text() {
+        let html: &str = "fizz buzz</div>";
+        let mut nodes = super::Parser {
+            pos: 0,
+            input: html.to_string(),
+        };
+        let node = nodes.parse_text();
+        match node.node_type {
+            super::dom::NodeType::Text(text) => assert_eq!(text, "fizz buzz"),
+            super::dom::NodeType::Element(_) => (),
+        }
+    }
+
+    #[test]
+    // confirm if panic is not called.
+    fn test_parse_element() {
+        let html: &str = "<div>fizz buzz</div>";
+        let mut nodes = super::Parser {
+            pos: 0,
+            input: html.to_string(),
+        };
+        let node = nodes.parse_element();
+        match node.node_type {
+            super::dom::NodeType::Text(_) => (),
+            super::dom::NodeType::Element(element_data) => assert_eq!(element_data.tag_name, "div"),
+        }
+    }
+}
