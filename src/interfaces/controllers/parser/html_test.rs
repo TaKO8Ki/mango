@@ -2,7 +2,7 @@ use crate::domain::entity::dom;
 use crate::interfaces::controllers::parser::html;
 
 #[test]
-fn parse_test() {
+fn test_parse() {
     let html: &str = "
                     <body>
                     <div>
