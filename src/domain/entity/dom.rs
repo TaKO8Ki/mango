@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 pub fn text(data: String) -> Node {
   Node {
     children: Vec::new(),
@@ -31,6 +33,19 @@ pub enum NodeType {
 pub struct ElementData {
   pub tag_name: String,
   pub attributes: AttrMap,
+}
+
+impl ElementData {
+  pub fn id(&self) -> Option<&String> {
+    self.attributes.get("id")
+  }
+
+  pub fn classes(&self) -> HashSet<&str> {
+    match self.attributes.get("class") {
+      Some(classlist) => classlist.split(' ').collect(),
+      None => HashSet::new(),
+    }
+  }
 }
 
 pub type AttrMap = std::collections::HashMap<String, String>;
