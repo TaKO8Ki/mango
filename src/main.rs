@@ -43,14 +43,20 @@ fn main() {
                     </body>
                     ";
 
+    let css: &str = "a { display: block; }";
+
     entry.connect_activate(move |x| {
         let url: String = x.get_text().unwrap();
         match get(&(url)) {
             Ok(_) => {
                 let root_node =
                     mango::interfaces::controllers::parser::html::parse(html.to_string());
-                println!("{:?}", root_node);
-                label.set_text(&(html).to_string())
+                let stylesheet =
+                    mango::interfaces::controllers::parser::css::parse(css.to_string());
+                let style_root =
+                    mango::interfaces::controllers::style::style_tree(&root_node, &stylesheet);
+                println!("{:?}", style_root);
+                label.set_text(&(html).to_string());
             }
             Err(err) => println!("Error: {:?}", err),
         }
