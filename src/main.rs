@@ -45,6 +45,10 @@ fn main() {
 
     let css: &str = "a { display: block; }";
 
+    let mut viewport: mango::interfaces::controllers::layout::Dimensions = Default::default();
+    viewport.content.width = 800.0;
+    viewport.content.height = 600.0;
+
     entry.connect_activate(move |x| {
         let url: String = x.get_text().unwrap();
         match get(&(url)) {
@@ -55,7 +59,9 @@ fn main() {
                     mango::interfaces::controllers::parser::css::parse(css.to_string());
                 let style_root =
                     mango::interfaces::controllers::style::style_tree(&root_node, &stylesheet);
-                println!("{:?}", style_root);
+                let layout_root =
+                    mango::interfaces::controllers::layout::layout_tree(&style_root, viewport);
+                println!("{:?}", layout_root);
                 label.set_text(&(html).to_string());
             }
             Err(err) => println!("Error: {:?}", err),
