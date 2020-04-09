@@ -29,12 +29,14 @@ pub struct EdgeSizes {
     pub bottom: f32,
 }
 
+#[derive(Debug)]
 pub struct LayoutBox<'a> {
     pub dimensions: Dimensions,
     pub box_type: BoxType<'a>,
     pub children: Vec<LayoutBox<'a>>,
 }
 
+#[derive(Debug)]
 pub enum BoxType<'a> {
     BlockNode(&'a StyledNode<'a>),
     InlineNode(&'a StyledNode<'a>),
