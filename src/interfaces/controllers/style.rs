@@ -2,23 +2,8 @@ use crate::domain::entity::dom::{ElementData, Node, NodeType};
 use crate::domain::entity::style::{
     Rule, Selector, SimpleSelector, Specificity, Stylesheet, Value,
 };
+use crate::domain::entity::style_node::{Display, PropertyMap, StyledNode};
 use std::collections::HashMap;
-
-pub type PropertyMap = HashMap<String, Value>;
-
-#[derive(Debug)]
-pub struct StyledNode<'a> {
-    pub node: &'a Node,
-    pub specified_values: PropertyMap,
-    pub children: Vec<StyledNode<'a>>,
-}
-
-#[derive(PartialEq)]
-pub enum Display {
-    Inline,
-    Block,
-    None,
-}
 
 impl<'a> StyledNode<'a> {
     pub fn value(&self, name: &str) -> Option<Value> {
